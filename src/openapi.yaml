@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: Add Two Numbers API
+  description: A simple API to add two numbers.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/
+    description: Production server
+paths:
+  /v1/add:
+    get:
+      summary: Add two numbers
+      operationId: api.api.add_numbers
+      parameters:
+        - name: num1
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: num2
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Successful sum
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sum:
+                    type: number
+        '400':
+          description: Invalid input

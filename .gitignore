@@ -1,0 +1,37 @@
+# 🐍 Ignore Python virtual environments
+venv/
+.env/
+ENV/
+env/
+
+# 🗃️ Ignore Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 📦 Ignore packaging files
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# 🧪 Ignore test result files
+*.log
+*.sqlite3
+.coverage
+.tox/
+
+# 💻 Ignore IDE/editor artifacts
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 🧼 Ignore system files
+.DS_Store
+Thumbs.db
+
+# 🚫 Don’t ignore dependencies!
+!requirements.txt
