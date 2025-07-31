@@ -1,0 +1,343 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Notes API",
+    "description" : "Tutorial API for working with notes",
+    "version" : "1.0"
+  },
+  "host" : "localhost:8080",
+  "basePath" : "/cc/rest/tutorial/notesapi",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/notes" : {
+      "get" : {
+        "summary" : "Returns a list of notes for a given claim. the prompt should have the claim number. This operation retrieves notes associated with a specific insurance claim. When a user prompt includes a claim number or mentions a claim, the LLM should invoke this tool and extract the claim number from the input to use as the query parameter `claimNumber`. This enables dynamic retrieval of claim-related notes based on natural language input.",
+        "description" : "Retrieves notes for a specific insurance claim for the claimnumber in the prompt. If the user prompt contains a numeric string (e.g., claim 4354646456 or claimnumber 45345335355), treat it as a claim number and invoke this tool using  claim or claimNumber. This operation retrieves notes associated with a specific insurance claim. When a user prompt includes a claim number or mentions a claim, the LLM should invoke this tool and extract the claim number from the input to use as the query parameter `claimNumber`. This enables dynamic retrieval of claim-related notes based on natural language input.",
+        "operationId" : "getNotes",
+        "produces" : [ "application/json" ],
+        "x-gw-authenticated" : true,
+        "parameters" : [ {
+          "$ref" : "#/parameters/claimNumber"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns a list of notes",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/NoteSummary"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notes/{noteId}" : {
+      "get" : {
+        "summary" : "Returns details for a single activity",
+        "description" : "Returns details for a single activity",
+        "operationId" : "getNote",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "$ref" : "#/parameters/activityId"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns details for a single activity",
+            "schema" : {
+              "$ref" : "#/definitions/NoteDetail"
+            }
+          }
+        }
+      }
+    },
+    "/swagger.json" : {
+      "get" : {
+        "summary" : "Returns the Swagger schema for this API",
+        "description" : "Returns a Swagger 2.0 schema for this API as json",
+        "operationId" : "generateDocs",
+        "produces" : [ "application/json" ],
+        "x-gw-authenticated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          }
+        }
+      }
+    }
+  },
+  "parameters" : {
+    "activityId" : {
+      "name" : "activityId",
+      "in" : "path",
+      "required" : true,
+      "type" : "string"
+    },
+    "claimNumber" : {
+      "name" : "claimNumber",
+      "in" : "query",
+      "required" : true,
+      "type" : "string"
+    },
+    "gwLanguageHeader" : {
+      "name" : "GW-Language",
+      "in" : "header",
+      "description" : "If specified, this header will set the language used when processing the request",
+      "type" : "string"
+    },
+    "gwLocaleHeader" : {
+      "name" : "GW-Locale",
+      "in" : "header",
+      "description" : "If specified, this header will set the locale used when processing the request",
+      "type" : "string"
+    },
+    "gwSchemaProperty" : {
+      "name" : "GW-IncludeSchemaProperty",
+      "in" : "header",
+      "description" : "If specified and the operation returns json with a defined schema, this will add a property, '$GW-Schema',  with the fully qualified name of the object's schema.",
+      "type" : "boolean"
+    },
+    "gwTraceability" : {
+      "name" : "X-Correlation-ID",
+      "in" : "header",
+      "description" : "This header permits a customer to trace a request from its initial reception through all of the subsequent applications that were invoked to handle that request. The actual traceability id present in the MDC and logs (and returned in the response), is dependent on the implementation of TraceabilityIDPlugin. The default implementation uses this value, if specified, or a generated UID.  However, another implementation may always generate a unique id and just log  the relationship between these incoming values and the generated UID. Note: that this header can be repeated, but the resulting string will just be the comma separated values.",
+      "type" : "string"
+    },
+    "gwTransactionID" : {
+      "name" : "GW-DBTransaction-ID",
+      "in" : "header",
+      "description" : "If specified and this operation results in a database commit, this header's value must not have been submitted before.  This value must be globally unique across all clients, apis and webservices. It is used for those transaction that are not idempotent. Unless this is explicitly referenced for an operation it is not required.",
+      "required" : true,
+      "type" : "string"
+    },
+    "gwUnknownPropertyHeader" : {
+      "name" : "GW-UnknownPropertyHandling",
+      "in" : "header",
+      "description" : "If specified, this header will drive the behavior for unknown property handling",
+      "type" : "string",
+      "enum" : [ "log", "reject", "ignore" ]
+    },
+    "gwUnknownQueryParameterHeader" : {
+      "name" : "GW-UnknownQueryParamHandling",
+      "in" : "header",
+      "description" : "If specified, this header will drive the behavior for unknown query parameter handling.  Default is to reject them.",
+      "type" : "string",
+      "enum" : [ "log", "reject", "ignore" ]
+    },
+    "gwValidateResponseHandling" : {
+      "name" : "GW-ValidateResponseHandling",
+      "in" : "header",
+      "description" : "If specified, this header permits the client to override the behavior around validating response",
+      "type" : "boolean"
+    }
+  },
+  "responses" : {
+    "AuthenticationError" : {
+      "description" : "401 error that is returned if the request's user cannot be authenticated",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "BadInput" : {
+      "description" : "400 error that is returned if the input to this endpoint is not valid; this can happen because of missing required parameters, malformed json, json that does not validate against the declared schema, etc.",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "InternalServerError" : {
+      "description" : "500 error that is returned if a server-side error prevented this request from being processed",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "NotAcceptable" : {
+      "description" : "406 error that is returned if the Accept header provided by the client does not match any types produced by this endpoint",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "NotAuthorized" : {
+      "description" : "403 error that is returned if the authenticated user is not authorized to access a given resource",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "NotFound" : {
+      "description" : "404 error that is returned if the specified resource does not exist",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "OperationNotSupported" : {
+      "description" : "405 error that is returned if the specified HTTP verb is not allowed on a given resource",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "ServiceUnavailable" : {
+      "description" : "503 error that is returned if the server's runlevel is not adequate to service this request",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    },
+    "UnsupportedContentType" : {
+      "description" : "415 error that is returned if the Content-Type of the request is not consumable by this endpoint",
+      "schema" : {
+        "$ref" : "#/definitions/ErrorInfo"
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "basicAuth" : {
+      "type" : "basic"
+    }
+  },
+  "security" : [ {
+    "basicAuth" : [ ]
+  } ],
+  "definitions" : {
+    "ActivitySummary" : {
+      "type" : "object",
+      "properties" : {
+        "assignedUser" : {
+          "type" : "object",
+          "$ref" : "#/definitions/User"
+        },
+        "claimNumber" : {
+          "type" : "string"
+        },
+        "escalated" : {
+          "type" : "boolean"
+        },
+        "escalationDate" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "mandatory" : {
+          "type" : "boolean"
+        },
+        "priority" : {
+          "type" : "string",
+          "x-gw-type" : "typekey.Priority"
+        },
+        "publicId" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "x-gw-type" : "typekey.ActivityStatus"
+        },
+        "subject" : {
+          "type" : "string"
+        },
+        "targetDate" : {
+          "type" : "string",
+          "format" : "date-time"
+        }
+      }
+    },
+    "NoteDetail" : {
+      "type" : "object",
+      "properties" : {
+        "activity" : {
+          "type" : "object",
+          "$ref" : "#/definitions/ActivitySummary"
+        },
+        "author" : {
+          "type" : "object",
+          "$ref" : "#/definitions/User"
+        },
+        "body" : {
+          "type" : "string"
+        },
+        "confidential" : {
+          "type" : "boolean"
+        },
+        "language" : {
+          "type" : "string",
+          "x-gw-type" : "typekey.LanguageType"
+        },
+        "publicId" : {
+          "type" : "string"
+        },
+        "securityType" : {
+          "type" : "string",
+          "x-gw-type" : "typekey.NoteSecurityType"
+        },
+        "subject" : {
+          "type" : "string"
+        },
+        "topic" : {
+          "type" : "string",
+          "x-gw-type" : "typekey.NoteTopicType"
+        }
+      }
+    },
+    "NoteSummary" : {
+      "type" : "object",
+      "properties" : {
+        "body" : {
+          "type" : "string"
+        }
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "properties" : {
+        "displayName" : {
+          "type" : "string"
+        },
+        "publicId" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ErrorDetails" : {
+      "type" : "object",
+      "properties" : {
+        "lineNumber" : {
+          "type" : "integer"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "parameterLocation" : {
+          "type" : "string"
+        },
+        "parameterName" : {
+          "type" : "string"
+        },
+        "stackTrace" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ErrorInfo" : {
+      "type" : "object",
+      "properties" : {
+        "details" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "$ref" : "#/definitions/ErrorDetails"
+          },
+          "xml" : {
+            "wrapped" : true
+          }
+        },
+        "developerMessage" : {
+          "type" : "string"
+        },
+        "statusCode" : {
+          "type" : "integer"
+        },
+        "userMessage" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}

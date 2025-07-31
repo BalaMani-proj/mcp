@@ -1,0 +1,13 @@
+connexion[flask,swagger-ui]==2.14.0
+flask<2.3
+fastmcp==2.10.3
+requests>=2.31
+python-dotenv>=1.0.0
+#boto3>=1.34.0         # Optional: AWS Bedrock support
+pytest>=7.4.0         # For unit testing your modules
+notebook>=7.0.0       # For running Jupyter prompt experiments
+transformers>=4.40.0  # For model pipelines via Hugging Face
+torch>=2.2.2              # Required for running models on CPU/GPU
+sentencepiece>=0.1.99     # Tokenizer backend for FLAN-T5 and other models
+accelerate>=0.28.0        # Optional: speeds up loading and inference
+
