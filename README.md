@@ -1,13 +1,13 @@
-# 🧠 MCP LLM Project
+# 🧠 MCP LLM Project for Insurance P&C (Guidewire)
 
-This project demonstrates how to build a Model Context Protocol (MCP) server that dynamically registers tools from an OpenAPI (Swagger) spec and enables prompt-based tool invocation using a local LLM (`Qwen2.5-0.5B-Instruct`).
+This project demonstrates how to build a Model Context Protocol (MCP) server for the Insurance Property & Casualty (P&C) domain, specifically for Guidewire REST APIs. It dynamically registers tools from an OpenAPI (Swagger) spec and enables prompt-based tool invocation using a local LLM (`Qwen2.5-0.5B-Instruct`).
 
 ---
 
 ## 🚀 Features
 
 - MCP server with arithmetic and weather tools
-- Dynamic tool registration from Swagger/OpenAPI spec
+- Dynamic tool registration from Guidewire Swagger/OpenAPI spec (Insurance P&C domain)
 - LLM client parses natural language and invokes tools
 - Robust JSON parsing and fallback handling
 - SSE transport for real-time tool calls
@@ -20,7 +20,7 @@ This project demonstrates how to build a Model Context Protocol (MCP) server tha
 mcp_llm_project/
 ├── server.py                 # MCP server with tool registration
 ├── openapi_to_mcp_tools.py   # Converts Swagger spec to MCP tools
-├── myswagger.json            # Swagger 2.0 spec for Notes API
+├── myswagger.json            # Guidewire Swagger 2.0 spec for Notes API (Insurance P&C)
 ├── llm_client.py             # LLM client that classifies prompts and invokes tools
 ├── .env                      # Environment config (e.g., HF_MODEL)
 └── README.md                 # Project documentation
@@ -38,9 +38,9 @@ mcp_llm_project/
 - `divide_tool`: Performs basic arithmetic division (num1, num2)
 - `weather_tool`: Fetches weather using Open-Meteo API (city)
 
-### Dynamic Tools (from Swagger)
+### Dynamic Tools (from Guidewire Swagger)
 
-- `getNotes`: Retrieves notes for a given claim number. If a user prompt mentions a claim or claimNumber, the LLM will extract the value and invoke this tool with the claimNumber parameter.
+- `getNotes`: Retrieves notes for a given insurance claim number. If a user prompt mentions a claim or claimNumber, the LLM will extract the value and invoke this tool with the claimNumber parameter. This enables dynamic retrieval of claim-related notes based on natural language input.
 - `getNote`: Retrieves details for a specific note (activityId)
 - `generateDocs`: Returns Swagger schema
 
@@ -93,11 +93,16 @@ print(result)
 ---
 
 ## 🧠 How It Works
-- Server registers tools from myswagger.json using openapi_to_mcp_tools.py
-- LLM client receives a natural language prompt
-- It classifies the prompt and extracts tool name + parameters
-- It invokes the correct tool via FastMCP SSE transport
-- Results are returned and printed
+
+- The MCP server loads the Guidewire Swagger spec and registers all endpoints as tools.
+- The LLM client analyzes user prompts, extracts relevant parameters (e.g., claim number), and invokes the correct tool.
+- This enables natural language access to Insurance P&C APIs, making it easy to retrieve claim notes, note details, and more.
+
+---
+
+## 🏢 Domain Context
+
+This solution is tailored for the Insurance Property & Casualty (P&C) domain and works with Guidewire REST APIs. The provided `myswagger.json` is a sample Guidewire Notes API spec, but the approach can be extended to other Guidewire modules and insurance APIs.
 
 ---
 
@@ -120,6 +125,4 @@ print(result)
 - Uses Qwen2.5-0.5B-Instruct for local inference
 - Compatible with other Hugging Face models
 - Swagger spec must follow OpenAPI v2.0
-
----
 
