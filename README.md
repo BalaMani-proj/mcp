@@ -1,6 +1,6 @@
 # 🧠 MCP LLM Project for Insurance P&C (Guidewire)
 
-This project demonstrates how to build a Model Context Protocol (MCP) server for the Insurance Property & Casualty (P&C) domain, specifically for Guidewire REST APIs. It dynamically registers tools from an OpenAPI (Swagger) spec and enables prompt-based tool invocation using a local LLM (`Qwen2.5-0.5B-Instruct`).
+This project demonstrates how to build a Model Context Protocol (MCP) server for the Insurance Property & Casualty (P&C) domain, specifically for Guidewire REST APIs. It dynamically registers tools from an OpenAPI (Swagger) spec and enables prompt-based tool invocation using a configurable LLM (default: `Qwen2.5-0.5B-Instruct`, but can be replaced with OpenAI GPT, Claude Sonnet, or other models).
 
 ---
 
@@ -9,6 +9,7 @@ This project demonstrates how to build a Model Context Protocol (MCP) server for
 - MCP server with arithmetic and weather tools
 - Dynamic tool registration from Guidewire Swagger/OpenAPI spec (Insurance P&C domain)
 - LLM client parses natural language and invokes tools
+- LLM model is configurable: use Qwen, OpenAI GPT, Claude Sonnet, or any Hugging Face model
 - Robust JSON parsing and fallback handling
 - SSE transport for real-time tool calls
 
@@ -73,7 +74,7 @@ pip install -r requirements.txt
 
 2. Create a `.env` file:
 ```
-HF_MODEL=Qwen/Qwen2.5-0.5B-Instruct
+HF_MODEL=Qwen/Qwen2.5-0.5B-Instruct  # Or set to OpenAI, Claude, or any supported model
 ```
 
 3. Run MCP server:
@@ -122,7 +123,16 @@ This solution is tailored for the Insurance Property & Casualty (P&C) domain and
 ---
 
 ## 📌 Notes
-- Uses Qwen2.5-0.5B-Instruct for local inference
+- Uses Qwen2.5-0.5B-Instruct for local inference by default, but you can configure any LLM (OpenAI GPT, Claude Sonnet, Hugging Face, etc.)
 - Compatible with other Hugging Face models
 - Swagger spec must follow OpenAPI v2.0
+
+---
+
+To save this:
+
+1. Open your project folder.
+2. Create a new file named `README.md`.
+3. Paste the entire content above into it.
+4. Save the file.
 
