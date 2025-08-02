@@ -123,10 +123,3 @@ print(result)
 
 ---
 
-To save this:
-
-1. Open your project folder.
-2. Create a new file named `README.md`.
-3. Paste the entire content above into it.
-4. Save the file.
-
