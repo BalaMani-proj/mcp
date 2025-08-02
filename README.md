@@ -129,10 +129,3 @@ This solution is tailored for the Insurance Property & Casualty (P&C) domain and
 
 ---
 
-To save this:
-
-1. Open your project folder.
-2. Create a new file named `README.md`.
-3. Paste the entire content above into it.
-4. Save the file.
-
